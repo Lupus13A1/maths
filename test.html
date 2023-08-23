@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Median Calculator</title>
+</head>
+
+<body>
+    <h1>Median Calculator</h1>
+
+    <label for="rowCount">จำนวนแถว: </label>
+    <input type="number" id="rowCount" min="1" value="5">
+    <button id="generateTable">สร้างตาราง</button>
+
+    <div id="tableContainer"></div>
+    <div id="medianResult"></div>
+    <div id="calculationSteps"></div>
+
+    <script>
+        document.getElementById('generateTable').addEventListener('click', generateTable);
+
+        function generateTable() {
+            const rowCount = parseInt(document.getElementById('rowCount').value);
+            const tableContainer = document.getElementById('tableContainer');
+
+            let tableHTML = `
+        <table>
+          <tr>
+            <th>ความสูง</th>
+            <th>จำนวนคน</th>
+            <th>ความถี่สะสม</th>
+          </tr>
+      `;
+
+            for (let i = 0; i < rowCount; i++) {
+                tableHTML += `
+          <tr>
+            <td><input type="text" class="height-input" placeholder="ความสูง"></td>
+            <td><input type="number" class="num-people-input" placeholder="จำนวนคน"></td>
+            <td><span class="cumulative-freq">0</span></td>
+          </tr>
+        `;
+            }
+
+            tableHTML += '</table>';
+            tableContainer.innerHTML = tableHTML;
+
+            const heightInputs = document.querySelectorAll('.height-input');
+            const numPeopleInputs = document.querySelectorAll('.num-people-input');
+
+            for (let i = 0; i < rowCount; i++) {
+                heightInputs[i].addEventListener('input', updateCumulativeFreq);
+                numPeopleInputs[i].addEventListener('input', updateCumulativeFreq);
+            }
+        }
+
+        function updateCumulativeFreq() {
+            const numPeopleInputs = document.querySelectorAll('.num-people-input');
+            const cumulativeFreqSpans = document.querySelectorAll('.cumulative-freq');
+
+            let cumulativeFreq = 0;
+
+            for (let i = 0; i < numPeopleInputs.length; i++) {
+                const numPeople = parseInt(numPeopleInputs[i].value) || 0;
+
+                cumulativeFreq += numPeople;
+                cumulativeFreqSpans[i].textContent = cumulativeFreq;
+            }
+
+            calculateMedian();
+        }
+
+        function calculateMedian() {
+            const numPeopleInputs = document.querySelectorAll('.num-people-input');
+            const heightInputs = document.querySelectorAll('.height-input');
+            const cumulativeFreqSpans = document.querySelectorAll('.cumulative-freq');
+            const medianResult = document.getElementById('medianResult');
+            const calculationSteps = document.getElementById('calculationSteps');
+
+            const totalNumPeople = Array.from(numPeopleInputs).reduce((total, input) => total + parseInt(input.value) || 0, 0);
+
+            let medianClassIndex = -1;
+            for (let i = 0; i < cumulativeFreqSpans.length; i++) {
+                if (parseInt(cumulativeFreqSpans[i].textContent) >= totalNumPeople / 2) {
+                    medianClassIndex = i;
+                    break;
+                }
+            }
+
+            if (medianClassIndex !== -1) {
+                const lowerBound = parseInt(heightInputs[medianClassIndex].value.split('-')[0]) || 0;
+                const classInterval = parseInt(heightInputs[medianClassIndex].value.split('-')[1]) - lowerBound || 1;
+                const cumulativeFreqBefore = parseInt(cumulativeFreqSpans[medianClassIndex].textContent) - parseInt(numPeopleInputs[medianClassIndex].value) || 0;
+                const frequencyOfMedianClass = parseInt(numPeopleInputs[medianClassIndex].value) || 0;
+                const median = lowerBound + ((totalNumPeople / 2 - cumulativeFreqBefore) / frequencyOfMedianClass) * classInterval;
+
+                medianResult.innerHTML = `<p>มัธยฐาน: ${median.toFixed(3)}</p>`;
+
+                const calculationStep1 = `result N/2 = ${totalNumPeople / 2} เลือกชั้น ${heightInputs[medianClassIndex].value}`;
+                const calculationStep2 = `result = ${cumulativeFreqSpans[medianClassIndex].textContent - numPeopleInputs[medianClassIndex].value} + ${frequencyOfMedianClass} / ${classInterval} (${totalNumPeople / 2 - cumulativeFreqBefore})`;
+                const calculationStep3 = `result = ${cumulativeFreqSpans[medianClassIndex].textContent - numPeopleInputs[medianClassIndex].value} + ${frequencyOfMedianClass} / ${classInterval} (${totalNumPeople / 2 - cumulativeFreqBefore})`;
+
+                calculationSteps.innerHTML = `<p>${calculationStep1}</p><p>${calculationStep2}</p><p>${calculationStep3}</p>`;
+            } else {
+                medianResult.innerHTML = '';
+                calculationSteps.innerHTML = '';
+            }
+        }
+    </script>
+</body>
+
+</html>
