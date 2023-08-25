@@ -12,11 +12,12 @@
 </head>
 
 <body>
-  <h1>คำนวณค่าเฉลี่ยของข้อมูลความสูง</h1>
+  <h2>คำนวณค่าเฉลี่ยแบบหลายข้อมูล</h2>
+  <p>คำเตือน: ตัวเลขที่เป็นชุด 146-150 ต้องแยกเป็น 2 ค่า</p>
   <table border="1">
     <tr>
-      <th>ความสูง1</th>
-      <th>ความสูง2</th>
+      <th>ค่าที่ 1</th>
+      <th>ค่าที่ 2</th>
       <th>จำนวน</th>
       <th>จุดกึ่งกลางชั้น</th>
       <th>fixi</th>
@@ -40,8 +41,8 @@
       <td id="fixi1"></td>
       <td id="fixiResult1"></td>
     </tr>
-  </table>
-  <button onclick="addRow()">เพิ่มแถว</button>
+  </table><br><br>
+  <button class="button-6" role="button" onclick="addRow()">เพิ่มแถว</button>
 
   <p>ผลรวมจำนวน: <span id="totalCount"></span></p>
   <p>ผลรวม fixi: <span id="totalFixi"></span></p>

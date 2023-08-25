@@ -223,16 +223,6 @@ nav ul li a:hover {
     color: #aaa;
 }
 
-nav {
-    mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 25%, #ffffff 75%, rgba(255, 255, 255, 0) 100%);
-}
-
-nav ul {
-    text-align: center;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0) 100%);
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.1), inset 0 0 1px rgba(255, 255, 255, 0.6);
-}
-
 nav ul li {
     display: inline-block;
 }
@@ -247,9 +237,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), inset 0 0 1px rgba(0, 242, 255);
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(0, 35, 122, 0.7);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), inset 0 0 3px #1de9b6;
 }
 
 table {
@@ -263,4 +251,27 @@ td {
     border: 1px solid black;
     padding: 8px;
     text-align: center;
+}
+
+
+/* CSS */
+.button-6 {
+    display: inline-block;
+    outline: 0;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 4px;
+    font-size: 13px;
+    height: 30px;
+    color: #0e0e10;
+    padding: 0 10px;
+    color: #fff;
+    background: #000a47;
+    line-height: 1.15;
+}
+
+.button-6:hover {
+    transition: all .1s ease;
+    box-shadow: 0 0 0 0 #fff, 0 0 0 2px #1de9b6;
 }
