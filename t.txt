@@ -43,8 +43,6 @@
   </table>
   <button onclick="addRow()">เพิ่มแถว</button>
 
-  <p>ผลรวมจำนวน: <span id="totalCount"></span></p>
-  <p>ผลรวม fixi: <span id="totalFixi"></span></p>
   <p>ค่าเฉลี่ย: <span id="averageValue"></span></p>
 
   <script>
@@ -59,15 +57,14 @@
           <div class="form_group field">
             <input class=" form_field" type="number" id="height${rowCount}_1" oninput="calculateRow(${rowCount})">
           </div>
-        </td>
         <td>
           <div class="form_group field">
-            <input class=" form_field" type="number" id="height${rowCount}_2" oninput="calculateRow(${rowCount})">
+            <input class=" form_field" type="number" id="height${rowCount}_2" oninput="calculateRow(${rowCount})" >
           </div>
         </td>
         <td>
           <div class="form_group field">
-            <input class=" form_field" type="number" id="count${rowCount}" oninput="calculateRow(${rowCount})">
+            <input class=" form_field" type="number" id="count${rowCount}" oninput="calculateRow(${rowCount})" >
           </div>
         </td>
         <td id="fixi${rowCount}"></td>
@@ -83,24 +80,20 @@
       const fixi = (height1 + height2) / 2;
       const fiFixi = fixi * count;
 
-      document.getElementById(`fixi${row}`).textContent = fixi.toFixed(0);
-      document.getElementById(`fixiResult${row}`).textContent = fiFixi.toFixed(0);
+      document.getElementById(`fixi${row}`).textContent = fixi;
+      document.getElementById(`fixiResult${row}`).textContent = fiFixi;
 
       updateTotal();
     }
 
     function updateTotal() {
-      let totalCount = 0;
-      let totalFixi = 0;
+      let totalFiFixi = 0;
 
       for (let i = 1; i <= rowCount; i++) {
-        totalCount += parseInt(document.getElementById(`count${i}`).value);
-        totalFixi += parseFloat(document.getElementById(`fixiResult${i}`).textContent);
+        totalFiFixi += parseFloat(document.getElementById(`fixiResult${i}`).textContent);
       }
 
-      const average = totalFixi / totalCount;
-      document.getElementById("totalCount").textContent = totalCount;
-      document.getElementById("totalFixi").textContent = totalFixi.toFixed(0);
+      const average = totalFiFixi / rowCount;
       document.getElementById("averageValue").textContent = average.toFixed(1);
     }
   </script>
