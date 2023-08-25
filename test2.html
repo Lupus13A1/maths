@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>คำนวณค่าเฉลี่ยของข้อมูลความสูง</title>
+</head>
+
+<body>
+  <h1>คำนวณค่าเฉลี่ยของข้อมูลความสูง</h1>
+  <table border="1">
+    <tr>
+      <th>ความสูง1</th>
+      <th>ความสูง2</th>
+      <th>จำนวน</th>
+      <th>จุดกึ่งกลางชั้น</th>
+      <th>fixi</th>
+    </tr>
+    <tr>
+      <td><input type="number" id="height1_1" oninput="calculateRow(1)" /></td>
+      <td><input type="number" id="height1_2" oninput="calculateRow(1)" /></td>
+      <td><input type="number" id="count1" oninput="calculateRow(1)" /></td>
+      <td id="fixi1"></td>
+      <td id="fixiResult1"></td>
+    </tr>
+  </table>
+  <button onclick="addRow()">เพิ่มแถว</button>
+
+  <p>ค่าเฉลี่ย: <span id="averageValue"></span></p>
+
+  <script>
+    let rowCount = 1;
+
+    function addRow() {
+      rowCount++;
+      const newRow = document.createElement("tr");
+      newRow.id = `row${rowCount}`;
+      newRow.innerHTML = `
+        <td><input type="number" id="height${rowCount}_1" oninput="calculateRow(${rowCount})" /></td>
+        <td><input type="number" id="height${rowCount}_2" oninput="calculateRow(${rowCount})" /></td>
+        <td><input type="number" id="count${rowCount}" oninput="calculateRow(${rowCount})" /></td>
+        <td id="fixi${rowCount}"></td>
+        <td id="fixiResult${rowCount}"></td>
+      `;
+      document.querySelector("table").appendChild(newRow);
+    }
+
+    function calculateRow(row) {
+      const height1 = parseFloat(document.getElementById(`height${row}_1`).value);
+      const height2 = parseFloat(document.getElementById(`height${row}_2`).value);
+      const count = parseInt(document.getElementById(`count${row}`).value);
+      const fixi = (height1 + height2) / 2;
+      const fiFixi = fixi * count;
+
+      document.getElementById(`fixi${row}`).textContent = fixi;
+      document.getElementById(`fixiResult${row}`).textContent = fiFixi;
+
+      updateTotal();
+    }
+
+    function updateTotal() {
+      let totalFiFixi = 0;
+
+      for (let i = 1; i <= rowCount; i++) {
+        totalFiFixi += parseFloat(document.getElementById(`fixiResult${i}`).textContent);
+      }
+
+      const average = totalFiFixi / rowCount;
+      document.getElementById("averageValue").textContent = average.toFixed(1);
+    }
+  </script>
+</body>
+
+</html>

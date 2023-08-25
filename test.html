@@ -1,111 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Median Calculator</title>
+    <title>คำนวณค่าเฉลี่ยของข้อมูลความสูง</title>
 </head>
 
 <body>
-    <h1>Median Calculator</h1>
+    <h1>คำนวณค่าเฉลี่ยของข้อมูลความสูง</h1>
+    <label for="rowInput">Number of Rows: </label>
+    <input type="number" id="rowInput" />
+    <button onclick="generateTable()">Generate Table</button>
 
-    <label for="rowCount">จำนวนแถว: </label>
-    <input type="number" id="rowCount" min="1" value="5">
-    <button id="generateTable">สร้างตาราง</button>
+    <table border="1" id="data-table">
+        <tr>
+            <th>ความสูง1</th>
+            <th>ความสูง2</th>
+            <th>จำนวน</th>
+            <th>จุดกึ่งกลางชั้น</th>
+            <th>fi</th>
+            <th>fixi</th>
+        </tr>
+    </table>
 
-    <div id="tableContainer"></div>
-    <div id="medianResult"></div>
-    <div id="calculationSteps"></div>
+    <p>ค่าเฉลี่ย: <span id="averageValue"></span></p>
 
     <script>
-        document.getElementById('generateTable').addEventListener('click', generateTable);
+        function calculateRow(row) {
+            const height1 = parseFloat(row.querySelector(".height:first-child").value);
+            const height2 = parseFloat(row.querySelector(".height:last-child").value);
+            const count = parseInt(row.querySelector(".count").value);
+            const fixi = (height1 + height2) / 2;
+            const fi = count;
+            const fiFixi = fixi * fi;
 
-        function generateTable() {
-            const rowCount = parseInt(document.getElementById('rowCount').value);
-            const tableContainer = document.getElementById('tableContainer');
+            row.querySelector(".fixi").textContent = fixi;
+            row.querySelector(".fi").textContent = fi;
+            row.querySelector(".fixiResult").textContent = fiFixi;
 
-            let tableHTML = `
-        <table>
-          <tr>
-            <th>ความสูง</th>
-            <th>จำนวนคน</th>
-            <th>ความถี่สะสม</th>
-          </tr>
+            updateTotal();
+        }
+
+        function updateTotal() {
+            const rows = document.querySelectorAll("#data-table tr");
+            let totalFi = 0;
+            let totalFiFixi = 0;
+
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                totalFi += parseInt(row.querySelector(".count").value);
+                totalFiFixi += parseFloat(row.querySelector(".fixiResult").textContent);
+            }
+
+            const average = totalFiFixi / totalFi;
+            document.getElementById("averageValue").textContent = average.toFixed(1);
+        }
+
+        function addRow() {
+            const table = document.getElementById("data-table");
+            const newRow = table.insertRow(table.rows.length - 1);
+            newRow.innerHTML = `
+        <td><input type="number" class="height" oninput="calculateRow(this.parentNode.parentNode)" /></td>
+        <td><input type="number" class="height" oninput="calculateRow(this.parentNode.parentNode)" /></td>
+        <td><input type="number" class="count" oninput="calculateRow(this.parentNode.parentNode)" /></td>
+        <td class="fixi"></td>
+        <td class="fi"></td>
+        <td class="fixiResult"></td>
       `;
 
-            for (let i = 0; i < rowCount; i++) {
-                tableHTML += `
-          <tr>
-            <td><input type="text" class="height-input" placeholder="ความสูง"></td>
-            <td><input type="number" class="num-people-input" placeholder="จำนวนคน"></td>
-            <td><span class="cumulative-freq">0</span></td>
-          </tr>
-        `;
-            }
-
-            tableHTML += '</table>';
-            tableContainer.innerHTML = tableHTML;
-
-            const heightInputs = document.querySelectorAll('.height-input');
-            const numPeopleInputs = document.querySelectorAll('.num-people-input');
-
-            for (let i = 0; i < rowCount; i++) {
-                heightInputs[i].addEventListener('input', updateCumulativeFreq);
-                numPeopleInputs[i].addEventListener('input', updateCumulativeFreq);
-            }
+            updateTotal();
         }
 
-        function updateCumulativeFreq() {
-            const numPeopleInputs = document.querySelectorAll('.num-people-input');
-            const cumulativeFreqSpans = document.querySelectorAll('.cumulative-freq');
+        function generateTable() {
+            const rowCount = parseInt(document.getElementById("rowInput").value);
 
-            let cumulativeFreq = 0;
-
-            for (let i = 0; i < numPeopleInputs.length; i++) {
-                const numPeople = parseInt(numPeopleInputs[i].value) || 0;
-
-                cumulativeFreq += numPeople;
-                cumulativeFreqSpans[i].textContent = cumulativeFreq;
+            const table = document.getElementById("data-table");
+            while (table.rows.length > 1) {
+                table.deleteRow(table.rows.length - 2);
             }
 
-            calculateMedian();
-        }
-
-        function calculateMedian() {
-            const numPeopleInputs = document.querySelectorAll('.num-people-input');
-            const heightInputs = document.querySelectorAll('.height-input');
-            const cumulativeFreqSpans = document.querySelectorAll('.cumulative-freq');
-            const medianResult = document.getElementById('medianResult');
-            const calculationSteps = document.getElementById('calculationSteps');
-
-            const totalNumPeople = Array.from(numPeopleInputs).reduce((total, input) => total + parseInt(input.value) || 0, 0);
-
-            let medianClassIndex = -1;
-            for (let i = 0; i < cumulativeFreqSpans.length; i++) {
-                if (parseInt(cumulativeFreqSpans[i].textContent) >= totalNumPeople / 2) {
-                    medianClassIndex = i;
-                    break;
-                }
-            }
-
-            if (medianClassIndex !== -1) {
-                const lowerBound = parseInt(heightInputs[medianClassIndex].value.split('-')[0]) || 0;
-                const classInterval = parseInt(heightInputs[medianClassIndex].value.split('-')[1]) - lowerBound || 1;
-                const cumulativeFreqBefore = parseInt(cumulativeFreqSpans[medianClassIndex].textContent) - parseInt(numPeopleInputs[medianClassIndex].value) || 0;
-                const frequencyOfMedianClass = parseInt(numPeopleInputs[medianClassIndex].value) || 0;
-                const median = lowerBound + ((totalNumPeople / 2 - cumulativeFreqBefore) / frequencyOfMedianClass) * classInterval;
-
-                medianResult.innerHTML = `<p>มัธยฐาน: ${median.toFixed(3)}</p>`;
-
-                const calculationStep1 = `result N/2 = ${totalNumPeople / 2} เลือกชั้น ${heightInputs[medianClassIndex].value}`;
-                const calculationStep2 = `result = ${cumulativeFreqSpans[medianClassIndex].textContent - numPeopleInputs[medianClassIndex].value} + ${frequencyOfMedianClass} / ${classInterval} (${totalNumPeople / 2 - cumulativeFreqBefore})`;
-                const calculationStep3 = `result = ${cumulativeFreqSpans[medianClassIndex].textContent - numPeopleInputs[medianClassIndex].value} + ${frequencyOfMedianClass} / ${classInterval} (${totalNumPeople / 2 - cumulativeFreqBefore})`;
-
-                calculationSteps.innerHTML = `<p>${calculationStep1}</p><p>${calculationStep2}</p><p>${calculationStep3}</p>`;
-            } else {
-                medianResult.innerHTML = '';
-                calculationSteps.innerHTML = '';
+            for (let i = 0; i < rowCount; i++) {
+                addRow();
             }
         }
     </script>

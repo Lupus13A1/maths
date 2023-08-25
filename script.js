@@ -73,3 +73,52 @@ function calculateFrequency() {
     const totalFrequencyElement = document.getElementById("totalFrequency");
     totalFrequencyElement.textContent = totalFrequency;
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const scoresInput = document.getElementById("scoresInput");
+    const frequenciesInput = document.getElementById("frequenciesInput");
+    const dataTable = document.getElementById("dataTable");
+    const resultElement = document.getElementById("result");
+
+    scoresInput.addEventListener("input", calculate);
+    frequenciesInput.addEventListener("input", calculate);
+
+    function calculate() {
+        const scores = scoresInput.value.split(" ").map(Number);
+        const frequencies = frequenciesInput.value.split(" ").map(Number);
+
+        let tableContent = "";
+        let total_fx = 0;
+        let total_frequency = 0;
+
+        for (let i = 0; i < scores.length; i++) {
+            const fx = scores[i] * frequencies[i];
+            total_fx += fx;
+            total_frequency += frequencies[i];
+            tableContent += `
+                <tr>
+                    <td>${scores[i]}</td>
+                    <td>${frequencies[i]}</td>
+                    <td>${fx}</td>
+                </tr>
+            `;
+        }
+
+        tableContent += `
+            <tr>
+                <td>รวม</td>
+                <td>${total_frequency}</td>
+                <td>${total_fx}</td>
+            </tr>
+        `;
+
+        dataTable.innerHTML = tableContent;
+
+        const x̄ = total_fx / total_frequency;
+        resultElement.innerHTML = `
+            <p>x̄ = Σfx / n</p>
+            <p>x̄ = ${total_fx} / ${total_frequency}</p>
+            <p>x̄ = ${x̄}</p>
+        `;
+    }
+});

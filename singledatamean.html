@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>หาค่าเฉลี่ยข้อมูลเดียว</title>
+</head>
+
+<body>
+    <h2>หาค่าเฉลี่ยข้อมูลเดียว</h2>
+    <p>ตัวอย่างการรับ Input จำนวน : 15 16 17 18 19</p>
+    <p>ตัวอย่างการรับ Input ความถี่ : 3 8 13 4 2</p>
+    <p>คำเตือน: ใส่ตัวเลขตัวแรกสุดและสุดท้ายห้ามเว้นวรรค</p>
+
+    <div class="form_group field">
+        <label for="scoresInput">จำนวน :</label>
+        <input class="form_field" type="text" id="scoresInput" placeholder="คะแนน" />
+    </div>
+    <div class="form_group field">
+        <label for="frequenciesInput">ความถี่ :</label>
+        <input class="form_field" type="text" id="frequenciesInput" placeholder="ความถี่" />
+    </div><br>
+    <table border="1" id="dataTable">
+        <tr>
+            <th>คะแนน</th>
+            <th>ความถี่</th>
+            <th>fx</th>
+        </tr>
+    </table>
+    <p id="result"></p>
+    <script src="script.js"></script>
+</body>
+
+</html>
