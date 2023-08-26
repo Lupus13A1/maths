@@ -122,3 +122,68 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
     }
 });
+let rowCount = 1;
+
+function addRow() {
+    rowCount++;
+    const newRow = document.createElement("tr");
+    newRow.id = `row${rowCount}`;
+    newRow.innerHTML = `
+        <td>
+          <div class="form_group field">
+            <input class="form_field" type="number" id="height${rowCount}_1" oninput="calculateRow(${rowCount})">
+          </div>
+        </td>
+        <td>
+          <div class="form_group field">
+            <input class="form_field" type="number" id="height${rowCount}_2" oninput="calculateRow(${rowCount})">
+          </div>
+        </td>
+        <td>
+          <div class="form_group field">
+            <input class="form_field" type="number" id="count${rowCount}" oninput="calculateRow(${rowCount})">
+          </div>
+        </td>
+        <td id="fixi${rowCount}"></td>
+        <td id="fixiResult${rowCount}"></td>
+      `;
+    document.querySelector("table").appendChild(newRow);
+}
+
+function removeRow() {
+    if (rowCount > 1) {
+        const lastRow = document.getElementById(`row${rowCount}`);
+        lastRow.remove();
+        rowCount--;
+
+        updateTotal();
+    }
+}
+
+function calculateRow(row) {
+    const height1 = parseFloat(document.getElementById(`height${row}_1`).value);
+    const height2 = parseFloat(document.getElementById(`height${row}_2`).value);
+    const count = parseInt(document.getElementById(`count${row}`).value);
+    const fixi = (height1 + height2) / 2;
+    const fiFixi = fixi * count;
+
+    document.getElementById(`fixi${row}`).textContent = fixi.toFixed(1);
+    document.getElementById(`fixiResult${row}`).textContent = fiFixi.toFixed(1);
+
+    updateTotal();
+}
+
+function updateTotal() {
+    let totalCount = 0;
+    let totalFixi = 0;
+
+    for (let i = 1; i <= rowCount; i++) {
+        totalCount += parseInt(document.getElementById(`count${i}`).value);
+        totalFixi += parseFloat(document.getElementById(`fixiResult${i}`).textContent);
+    }
+
+    const average = totalFixi / totalCount;
+    document.getElementById("totalCount").textContent = totalCount;
+    document.getElementById("totalFixi").textContent = totalFixi.toFixed(1);
+    document.getElementById("averageValue").textContent = average.toFixed(1);
+}

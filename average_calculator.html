@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>หาค่า FiXi</title>
+</head>
+
+<body>
+  <h2>คำนวณค่าเฉลี่ยแบบหลายข้อมูล</h2>
+  <p>คำเตือน: ตัวเลขที่เป็นชุด 146-150 ต้องแยกเป็น 2 ค่า หรือก็คือค่าช่องที่1 = 146 ค่าช่องที่1 = 150</p>
+  <table border="1">
+    <tr>
+      <th>ค่าที่ 1</th>
+      <th>ค่าที่ 2</th>
+      <th>จำนวน</th>
+      <th>จุดกึ่งกลางชั้น</th>
+      <th>fixi</th>
+    </tr>
+    <tr>
+      <td>
+        <div class="form_group field">
+          <input class="form_field" type="number" id="height1_1" oninput="calculateRow(1)">
+        </div>
+      </td>
+      <td>
+        <div class="form_group field">
+          <input class="form_field" type="number" id="height1_2" oninput="calculateRow(1)">
+        </div>
+      </td>
+      <td>
+        <div class="form_group field">
+          <input class="form_field" type="number" id="count1" oninput="calculateRow(1)">
+        </div>
+      </td>
+      <td id="fixi1"></td>
+      <td id="fixiResult1"></td>
+    </tr>
+  </table><br><br>
+  <button class="button-6" role="button" onclick="addRow()">เพิ่มแถว</button>
+  <button class="button-6" role="button" onclick="removeRow()">ลบแถว</button>
+
+  <p>ผลรวมจำนวน: <span id="totalCount"></span></p>
+  <p>ผลรวม fixi: <span id="totalFixi"></span></p>
+  <p>ค่าเฉลี่ย: <span id="averageValue"></span></p>
+  <script src="script.js"></script>
+</body>
+
+</html>

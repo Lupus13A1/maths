@@ -4,96 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Median Calculator</title>
+    <title>คำนวณและแสดงผลลัพธ์</title>
 </head>
 
 <body>
-    <h1>Median Calculator</h1>
+    <h1>คำนวณและแสดงผลลัพธ์</h1>
+    <form id="calculationForm">
+        <label for="input1">ค่าที่ 1: </label>
+        <input type="number" id="input1" name="input1"><br><br>
 
-    <label for="rowCount">Number of Rows: </label>
-    <input type="number" id="rowCount" min="1" value="5">
-    <button id="generateTable">Generate Table</button><br><br><br>
+        <label for="input2">ค่าที่ 2: </label>
+        <input type="number" id="input2" name="input2"><br><br>
 
-    <div id="tableContainer"></div>
-    <div id="calculationSteps"></div>
+        <label for="numberOfPeople">จำนวนคน: </label>
+        <input type="number" id="numberOfPeople" name="numberOfPeople"><br><br>
+
+        <button type="button" onclick="calculate()">คำนวณ</button>
+    </form>
+
+    <h2>ผลลัพธ์</h2>
+    <table id="resultTable">
+        <tr>
+            <th>ค่าที่ 1</th>
+            <th>ค่าที่ 2</th>
+            <th>จำนวนคน</th>
+            <th>ความถี่สะสม</th>
+        </tr>
+    </table>
 
     <script>
-        document.getElementById('generateTable').addEventListener('click', generateTable);
+        function calculate() {
+            const input1 = parseFloat(document.getElementById("input1").value);
+            const input2 = parseFloat(document.getElementById("input2").value);
+            const numberOfPeople = parseFloat(document.getElementById("numberOfPeople").value);
 
-        function generateTable() {
-            const rowCount = parseInt(document.getElementById('rowCount').value);
-            const tableContainer = document.getElementById('tableContainer');
+            const result = calculateResult(input1, input2, numberOfPeople);
 
-            let tableHTML = `
-         <table>
-           <tr>
-             <th>Height</th>
-             <th>Number of People</th>
-             <th>Cumulative Frequency</th>
-           </tr>
-       `;
+            const table = document.getElementById("resultTable");
+            const row = table.insertRow(-1);
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            const cell4 = row.insertCell(3);
 
-            for (let i = 0; i < rowCount; i++) {
-                tableHTML += `
-           <tr>
-             <td><input type="text" class="height-input" placeholder="Height"></td>
-             <td><input type="number" class="num-people-input" placeholder="Number of People"></td>
-             <td><span class="cumulative-freq">0</span></td>
-           </tr>
-         `;
-            }
-
-            tableHTML += '</table>';
-            tableContainer.innerHTML = tableHTML;
-
-            const heightInputs = document.querySelectorAll('.height-input');
-            const numPeopleInputs = document.querySelectorAll('.num-people-input');
-
-            for (let i = 0; i < rowCount; i++) {
-                heightInputs[i].addEventListener('input', updateCumulativeFreq);
-                numPeopleInputs[i].addEventListener('input', updateCumulativeFreq);
-            }
-
-            updateCumulativeFreq(); // Update cumulative frequency after generating table
+            cell1.innerHTML = input1.toFixed(2);
+            cell2.innerHTML = input2.toFixed(2);
+            cell3.innerHTML = numberOfPeople.toFixed(2);
+            cell4.innerHTML = result.toFixed(2);
         }
 
-        function updateCumulativeFreq() {
-            const numPeopleInputs = document.querySelectorAll('.num-people-input');
-            const cumulativeFreqSpans = document.querySelectorAll('.cumulative-freq');
+        function calculateResult(input1, input2, numberOfPeople) {
+            const cumulativeFrequency = input2;
+            const previousCumulativeFrequency = input1 > 0 ? input1 : 0;
+            const frequency = numberOfPeople - previousCumulativeFrequency;
 
-            let cumulativeFreq = 0;
-
-            for (let i = 0; i < numPeopleInputs.length; i++) {
-                const numPeople = parseInt(numPeopleInputs[i].value) || 0;
-
-                cumulativeFreq += numPeople;
-                cumulativeFreqSpans[i].textContent = cumulativeFreq;
-            }
-
-            calculateMedian(); // Calculate median after updating cumulative frequency
-        }
-        function calculateMedian() {
-            const cumulativeFreqSpans = document.querySelectorAll('.cumulative-freq');
-            const rowCount = cumulativeFreqSpans.length;
-            const n = parseInt(cumulativeFreqSpans[rowCount - 1].textContent);
-
-            const f = parseInt(document.querySelectorAll('.num-people-input')[rowCount - 1].value);
-            const i = parseInt(document.querySelectorAll('.height-input')[rowCount - 1].value) - parseInt(document.querySelectorAll('.height-input')[rowCount - 2].value);
-            const l = parseInt(document.querySelectorAll('.height-input')[rowCount - 2].value);
-
-            const medianCalculation = `
-            Me = ${l} + ${i} / ${f} * (${n} / 2 - ${cumulativeFreqSpans[rowCount - 2].textContent})
-            Me = ${l} + ${i} / ${f} * ${n / 2 - parseInt(cumulativeFreqSpans[rowCount - 2].textContent)}
-            Me ≈ ${l} + ${i} / ${f} * ${n / 2 - parseInt(cumulativeFreqSpans[rowCount - 2].textContent)}
-            Me ≈ ${l} + ${i / f} * ${n / 2 - parseInt(cumulativeFreqSpans[rowCount - 2].textContent)}
-            Me ≈ ${l} + ${i / f * (n / 2 - parseInt(cumulativeFreqSpans[rowCount - 2].textContent))}
-            Me ≈ ${l + i / f * (n / 2 - parseInt(cumulativeFreqSpans[rowCount - 2].textContent))}
-            `;
-
-            document.getElementById("calculationSteps").textContent = medianCalculation;
-
-            const me = l + (i / f) * (n / 2 - parseInt(cumulativeFreqSpans[rowCount - 2].textContent));
-            document.getElementById("medianResult").textContent = `Median: ${me.toFixed(3)}`;
+            const result = cumulativeFrequency + (frequency / 40) * (numberOfPeople - cumulativeFrequency);
+            return result;
         }
 
     </script>
