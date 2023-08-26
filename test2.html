@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sigma Calculation</title>
+</head>
+
+<body>
+    <label for="input">Enter n: </label>
+    <input type="number" id="input">
+    <button id="calculateButton">Calculate</button>
+    <br>
+    <div id="result"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var calculateButton = document.getElementById("calculateButton");
+            calculateButton.addEventListener("click", function () {
+                var n = parseInt(document.getElementById("input").value);
+
+                var resultElement = document.getElementById("result");
+                resultElement.innerHTML = "result:<br>i = 1<br>&Sigma;<sub>n</sub> (x<sup>i</sup><sup>3</sup> + y<sup>i</sup><sup>3</sup>)";
+            });
+        });
+
+    </script>
+</body>
+
+</html>
