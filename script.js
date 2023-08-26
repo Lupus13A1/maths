@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const averageScore = sumScores / totalScores;
 
         outputElement.innerHTML = `
-            <p>จำนวนคะแนนทั้งหมด = ${totalScores} คะแนน</p>
+            <p>จำนวนคะแนนทั้งหมด = ${totalScores} จำนวน</p>
             <p>ผลรวมคะแนนทั้งหมด = ${sumScores}</p>
             <p>ค่าเฉลี่ยประมาณ ${averageScore.toFixed(2)}</p>
         `;
