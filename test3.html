@@ -1,13 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <style>
+        /* Style for the container */
+        .image-container {
+            position: relative;
+            width: 300px;
+            height: 2000px;
+            overflow: hidden;
+        }
+
+        /* Style for the image */
+        .image {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        /* Hover effect */
+        .image-container:hover .image {
+            transform: scale(1.2);
+        }
+    </style>
 </head>
 
 <body>
+
+    <div class="image-container">
+        <img class="image" src="1 (1).jpg" alt="Hover Image">
+    </div>
+
 </body>
 
 </html>
